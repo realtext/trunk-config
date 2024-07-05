@@ -1,0 +1,5 @@
+# trunk-ignore-all(yls-check/no-yls)
+# ....isn't it ironic?
+excluded_domains:
+- kubernetes-schemas.pages.dev
+- k8s-schemas.pages.dev

@@ -1,0 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/remarkrc
+plugins:
+- remark-preset-lint-recommended
+- ["remark-lint-list-item-indent", "one"]

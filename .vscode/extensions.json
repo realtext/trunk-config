@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "redhat.vscode-yaml",
+    "trunk.io",
+    "editorconfig.editorconfig",
+    "task.vscode-task",
+    "PKief.material-icon-theme",
+    "mikestead.dotenv",
+    "Gruntfuggly.todo-tree",
+    "mkhl.direnv",
+  ]
+}

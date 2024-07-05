@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://static.trunk.io/pub/trunk-yaml-schema.json
+
+# This file controls the behavior of Trunk: https://docs.trunk.io/cli
+# To learn more about the format of this file, see https://docs.trunk.io/reference/trunk-yaml
+version: 0.1
+required_trunk_version: ">= 1.22.0"
+cli:
+  shell_hooks:
+    enforce: true
+    path_add:
+    - "${workspace}/tools"
+
+# Many linters and tools depend on runtimes - configure them here. (https://docs.trunk.io/runtimes)
+runtimes:
+  enabled:
+  - go@1.21.0
+  - node@18.12.1
+  - python@3.10.8
+
+# Trunk provides extensibility via plugins. (https://docs.trunk.io/plugins)
+plugins:
+  sources:
+  - id: trunk
+    ref: v1.6.0
+    uri: https://github.com/trunk-io/plugins
+
+# This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
+lint:
+  disabled:
+  - checkov # Checkov would make every commit take too long
+  - markdownlint # We use remark-lint instead
+  - prettier # Non-customizable
+  - trivy # Takes too long
+  enabled:
+  - actionlint@1.7.1
+  - bandit@1.7.9
+  - black@24.4.2
+  - git-diff-check
+  - gitleaks@8.18.3
+  - hadolint@2.12.0
+  - isort@5.13.2
+  - kube-linter@0.6.4
+  - markdown-link-check@3.12.2
+  - osv-scanner@1.7.4
+  - oxipng@9.1.1
+  - pre-commit-hooks@4.6.0
+  - remark-lint@12.0.1
+  - renovate@37.408.0
+  - ruff@0.4.8
+  - shellcheck@0.10.0
+  - shfmt@3.6.0
+  - svgo@3.3.2
+  - taplo@0.8.1
+  - trufflehog@3.78.1
+  - yls-check@1.0.2
+  - yamllint@1.35.1
+  - yamlfmt@0.12.1
+  definitions:
+  - name: yamlfmt
+    files: [yaml]
+    description: A formatter yaml files
+    commands:
+    - name: format
+      output: rewrite
+      run: yamlfmt ${target}
+      success_codes: [0]
+      in_place: true
+      formatter: true
+      batch: true
+    tools: [yamlfmt]
+    suggest_if: files_present
+    known_good_version: 0.12.1
+    version_command:
+      parse_regex: ${semver}
+      run: yamlfmt -version
+    direct_configs:
+    - .yamlfmt.yaml
+    - .yamlfmt.yml
+    - yamlfmt.yaml
+    - yamlfmt.yml
+
+  exported_configs:
+  - configs:
+    - configs/.bandit
+    - configs/.hadolint
+    - configs/.isort.cfg
+    - configs/.kube-linter.yaml
+    - configs/.remarkrc.yaml
+    - configs/.shellcheckrc
+    - configs/.yamllint.yaml
+    - configs/gitleaks.toml
+    - configs/ruff.toml
+    - configs/taplo.tomp
+    - configs/trunk-yls.yaml
+    - configs/yamlfmt.yaml
+    - commitlint.config.mjs
+
+actions:
+  enabled:
+  - commitlint
+  - trunk-announce
+  - trunk-check-pre-push
+  - trunk-check-pre-commit
+  - trunk-fmt-pre-commit
+  - trunk-upgrade-available
+
+tools:
+  enabled:
+  - action-validator@0.6.0
+  - gh@2.52.0
+  - direnv@2.34.0
